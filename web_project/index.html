@@ -1,0 +1,101 @@
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="reception.css" rel="stylesheet" type="text/css">
+<title>資訊回報平台</title>
+<style type="text/css"> </style>
+</head>
+<body>
+<div class="container">
+			<div class="primary_header">
+			  <h1 class="title">資訊回報平台</h1>
+			</div>
+		</div>
+
+       		<section class="body_section">
+       		<article class = "left_article">
+       			<form action="action_page.php">
+					<h3>地點<input type="text" name="location" value=""></h3>
+					<h3>事件<input type="text" name="event" value=""></h3>
+					Lat︰<input id="Lat" name="inLatLng" type="text" size="40" >
+					<br>
+					Lng: <input id="Lng" name="inLatLng" type="text" size="40" >
+					<br><br>
+					<input type="submit" value="送出">
+				</form> 
+       		</article>
+		<div id="map"></div>
+    </section>
+<script type="text/javascript">
+		//地圖
+		var map;
+		var sign = [];
+		var index = 0;
+		var markers = [];
+		var event = [];
+		//var location = {lat: 22.99, lng: 120.21};
+		//var content = '<div>event : flood <br> location : xio-dong road<br>';
+		function initMap() {
+			//infowindow marker location 
+			var location = {lat: 22.9961288, lng: 120.2171941};
+			//infowindow content html string 
+			var Teststring = '<div>event : flood <br> location : xio-dong road<br>';
+			map = new google.maps.Map(document.getElementById('map'), {
+			center: {lat: 22.9961288, lng: 120.2171941},
+			zoom: 16
+			});
+			map.addListener('click', function(e) {
+		    	getLatLng(e.latLng, map);
+		  	});
+			//create infowindow
+       		var infowindow = new google.maps.InfoWindow({
+    			content: Teststring
+  			});
+			var m = new google.maps.Marker({
+				position: location,
+				map:map,
+				tilte:'test'
+			});
+			//add event listener to open the infowindow when clicked
+			m.addListener('click', function() {
+    			infowindow.open(map, m);
+  			});
+		}
+
+		function setMapOnAll(map) {
+			for (var i = 0; i < markers.length; i++) {
+				markers[i].setMap(map);
+			}
+		}
+		function setEvent(map){
+			for(var i = 0; i < event.length ; i++){
+				event[i].setMap(map);
+			}
+		}
+		function getLatLng(latLng, map) {
+			setMapOnAll(null);
+			marker = [];
+			var marker = new google.maps.Marker({
+			position: latLng,
+			map: map
+			});
+			markers.push(marker);
+			document.getElementById("Lat").value = latLng.lat();
+			document.getElementById("Lng").value = latLng.lng();
+			
+		}
+
+		
+		</script>
+	<script async defer
+			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0YHjxhTqUPSIQtCRRLPsKmYZ8NUmiX00&callback=initMap">
+		</script>
+
+		
+  </body>
+<footer>
+  &copy;2016 - cultion
+  </footer>
+</html>
